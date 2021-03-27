@@ -128,7 +128,7 @@ Notifier.prototype.create_connection = function(debug) {
   var connection = new Imap({
     user: self.config.username,
     password: self.config.password,
-    xoauth2: self.config.xoauth2,
+    xoauth2: this.buildAccessToken(),
     host: self.config.host,
     port: self.config.port,
     tls: self.config.tls || false,
@@ -169,8 +169,19 @@ Notifier.prototype.restart = function() {
   })
 }
 
+Notifier.prototype.buildAccessToken = function(){
+    var access_token = getStdout(self.config.xoauth2_cmd),
+        C_A = String.fromCharCode(1);
+    return Buffer.from(("user=" + self.config.username) + C_A + ("auth=Bearer " + access_token) + C_A + C_A).toString("base64");
+}
+
 
 // Utils
+
+function getStdout(cmd) {
+    var stdout = child_process.execSync(cmd);
+    return stdout.toString().trim();
+}
 
 function noop() {
 }
