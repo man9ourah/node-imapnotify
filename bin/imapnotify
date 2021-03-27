@@ -6,6 +6,7 @@ var Imap = require('imap')
   , fs = require('fs')
   , printf = require('printf')
   , exec = require('child_process').exec
+  , execSync = require('child_process').execSync
   , mkdirp = require('mkdirp')
   , xenvar = require('xenvar')
   , bunyan = require('bunyan')
@@ -179,7 +180,7 @@ Notifier.prototype.buildAccessToken = function(){
 // Utils
 
 function getStdout(cmd) {
-    var stdout = child_process.execSync(cmd);
+    var stdout = execSync(cmd);
     return stdout.toString().trim();
 }
 
