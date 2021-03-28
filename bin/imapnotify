@@ -171,9 +171,12 @@ Notifier.prototype.restart = function() {
 }
 
 Notifier.prototype.buildAccessToken = function(){
-    var access_token = getStdout(this.config.xoauth2_cmd),
-        C_A = String.fromCharCode(1);
-    return Buffer.from(("user=" + this.config.username) + C_A + ("auth=Bearer " + access_token) + C_A + C_A).toString("base64");
+    if (this.config.xoauth2_cmd){
+        var access_token = getStdout(this.config.xoauth2_cmd),
+            C_A = String.fromCharCode(1);
+        return Buffer.from(("user=" + this.config.username) + C_A + ("auth=Bearer " + access_token) + C_A + C_A).toString("base64");
+    }
+    return ""
 }
 
 
